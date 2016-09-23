@@ -3,6 +3,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as countingActions from '../../actions/counting';
 
+@connect(
+  state => ({
+    counting: state.counting,
+  }),
+  dispatch => ({
+    actions: bindActionCreators(countingActions, dispatch),
+  }),
+)
 class Counter extends React.Component {
   render() {
     const { countInc, countDec } = this.props.actions;
@@ -23,11 +31,4 @@ Counter.propTypes = {
   actions: PropTypes.object.isRequired,
 };
 
-export default connect(
-  state => ({
-    counting: state.counting,
-  }),
-  dispatch => ({
-    actions: bindActionCreators(countingActions, dispatch),
-  }),
-)(Counter);
+export default Counter;

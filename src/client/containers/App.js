@@ -5,6 +5,14 @@ import * as countingActions from '../actions/counting';
 import Nav from '../components/Nav/Nav';
 import './App.scss';
 
+@connect(
+  state => ({
+    counting: state.counting,
+  }),
+  dispatch => ({
+    actions: bindActionCreators(countingActions, dispatch),
+  }),
+)
 class App extends React.Component {
   render() {
     return (
@@ -20,11 +28,4 @@ App.propTypes = {
   children: PropTypes.object.isRequired,
 };
 
-export default connect(
-  state => ({
-    counting: state.counting,
-  }),
-  dispatch => ({
-    actions: bindActionCreators(countingActions, dispatch),
-  }),
-)(App);
+export default App;

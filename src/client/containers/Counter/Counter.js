@@ -12,6 +12,11 @@ import * as countingActions from '../../actions/counting';
   }),
 )
 class Counter extends React.Component {
+  static propTypes = {
+    counting: PropTypes.number.isRequired,
+    actions: PropTypes.object.isRequired,
+  };
+
   render() {
     const { countInc, countDec } = this.props.actions;
 
@@ -25,10 +30,5 @@ class Counter extends React.Component {
     );
   }
 }
-
-Counter.propTypes = {
-  counting: PropTypes.number.isRequired,
-  actions: PropTypes.object.isRequired,
-};
 
 export default Counter;

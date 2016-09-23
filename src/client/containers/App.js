@@ -14,6 +14,10 @@ import './App.scss';
   }),
 )
 class App extends React.Component {
+  static propTypes = {
+    children: PropTypes.object.isRequired,
+  };
+
   render() {
     return (
       <div className='content'>
@@ -23,9 +27,5 @@ class App extends React.Component {
     );
   }
 }
-
-App.propTypes = {
-  children: PropTypes.object.isRequired,
-};
 
 export default App;

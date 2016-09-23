@@ -58,11 +58,11 @@ module.exports = {
       {
         test: /\.s?css$/,
         loader: ExtractTextPlugin.extract('style', 'css!sass'),
-        exclude: /(node_modules)\/react-toolbox/,
+        exclude: /(node_modules)/,
       },
       {
         test: /(\.scss|\.css)$/,
-        include: /(node_modules)\/react-toolbox/,
+        include: /(node_modules)/,
         loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass'),
       },
       { test: /.js$/, include: path.join(__dirname, 'src/client'), loaders: ['babel'] },

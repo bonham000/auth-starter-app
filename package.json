@@ -6,7 +6,7 @@
   "scripts": {
     "lint:server": "eslint src/server",
     "lint:client": "eslint src/client",
-    "lint": "npm-run-all --silent lint:*",
+    "lint": "npm-run-all --silent lint:* || exit 0",
     "clean": "rm -rf dist/",
     "create:dist": "mkdir -p dist/client/ && mkdir -p dist/server/",
     "create:html": "cp src/client/index.html dist/client/",

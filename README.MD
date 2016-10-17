@@ -5,7 +5,7 @@ This light starter kit is designed to get you up and running with a bunch of awe
 ## Features
 
 * React, Redux, Node.js & SASS
-* You can use ES6+ (with object spread and decorators) on client and server, it's compiles to ES5 with babel.
+* You can use ES6+ (with object spread and decorators) on client and server, it compiles to ES5 with babel.
 * Client hot reloading (page reloads on client file change)
 * Server hot reloading (server reloads on server file change)
 * Redux devtools - [GIF](https://camo.githubusercontent.com/a0d66cf145fe35cbe5fb341494b04f277d5d85dd/687474703a2f2f692e696d6775722e636f6d2f4a34476557304d2e676966). Just install browser extension: [Chrome](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/remotedev/).

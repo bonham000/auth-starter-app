@@ -4,7 +4,7 @@ This light starter kit is designed to get you up and running with a bunch of awe
 
 ## Features
 
-* React, Redux, Node.js & SASS 
+* React, Redux, Node.js & SASS
 * You can use ES6+ (with object spread and decorators) on client and server, it's compiles to ES5 with babel.
 * Client hot reloading (page reloads on client file change)
 * Server hot reloading (server reloads on server file change)
@@ -17,10 +17,11 @@ This light starter kit is designed to get you up and running with a bunch of awe
 
 * Server code in ```/src/server``` folder, client code in ```/src/client``` folder
 * Server and client bundles stores in ```/dist``` folder
+* ```bundle.js``` size is just ~90kb (in Chrome)
 
 ### Instalation
 
-``` 
+```
 git clone https://github.com/yondepo/react-node-light-spa.git
 cd react-node-light-spa
 npm install
@@ -43,6 +44,6 @@ npm run build
 npm start
 ```
 
-## Licence 
+## Licence
 
 MIT

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as countingActions from '../actions/counting';
 import Nav from '../components/Nav/Nav';
-import './App.scss';
 
 @connect(
   state => ({

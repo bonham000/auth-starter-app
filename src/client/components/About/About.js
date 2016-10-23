@@ -4,8 +4,7 @@ import { Link } from 'react-router';
 
 const About = () =>
   <div>
-    <h1>About</h1>
-    <Link to=''>Back</Link>
+    <h3>This is a React/Redux Single Page Application with User Authentication</h3>
   </div>;
 
 export default About;

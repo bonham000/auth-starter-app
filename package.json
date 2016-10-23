@@ -55,6 +55,7 @@
     "webpack-hot-middleware": "^2.12.2"
   },
   "dependencies": {
+    "axios": "^0.15.2",
     "bluebird": "^3.4.6",
     "compression": "^1.6.2",
     "express": "^4.14.0",

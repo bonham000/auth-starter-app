@@ -4,21 +4,22 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { loginUser, fetchQuote, fetchSecretQuote } from '../actions/authActions'
 
-import Login from '../components/Login'
 import Navbar from '../components/Navbar'
 
 class App extends Component {
   render() {
 
     const { dispatch, isAuthenticated, errorMessage } = this.props
+
     return (
       <div>
         <Navbar
           isAuthenticated={isAuthenticated}
           errorMessage={errorMessage}
           dispatch={dispatch} />
-        <div className='container'>
-        </div>
+
+        {this.props.children}
+
       </div>
     )
   }

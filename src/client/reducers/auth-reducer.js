@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import {
-  LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS
+  LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS, NEW_SIGNUP
 } from '../actions/authActions'
 
 // The auth reducer. The starting state sets authentication
@@ -33,6 +33,12 @@ const auth = (state = {
       return Object.assign({}, state, {
         isFetching: true,
         isAuthenticated: false
+      })
+    case NEW_SIGNUP:
+      return Object.assign({}, state, {
+        isFetching: true,
+        isAuthenticated: false,
+        user: action.user
       })
     default:
       return state

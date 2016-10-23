@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { browserHistory } from 'react-router'
-import Login from './Login'
+import Authenticate from './Authenticate'
 import Logout from './Logout'
 import { loginUser, logoutUser } from '../actions/authActions'
 
@@ -10,7 +10,7 @@ class Navbar extends Component {
     this.navigateCounter = this.navigateCounter.bind(this);
   }
   navigateCounter() {
-    console.log(this.props)
+
     if (this.props.isAuthenticated) {
       browserHistory.push('/counter');
     }
@@ -20,28 +20,25 @@ class Navbar extends Component {
     const { dispatch, isAuthenticated, errorMessage } = this.props
 
     return (
-      <nav>
-        <div>
-          <div>
+        <div className = "navigationWrapper">
+          <div className = "linksWrapper">
 
-            {!isAuthenticated &&
-              <Login
+            { !isAuthenticated &&
+              <Authenticate
                 errorMessage={errorMessage}
                 onLoginClick={ creds => dispatch(loginUser(creds)) }
-              />
-            }
+              /> }      
 
-            {isAuthenticated &&
-              <Logout onLogoutClick={() => dispatch(logoutUser())} />
-            }
+            { isAuthenticated &&
+              <Logout onLogoutClick={() => dispatch(logoutUser())} /> }
 
-            <div onClick = {this.navigateCounter}>
-              <h4>Link to the Counter Page</h4>
-            </div>
+            { isAuthenticated &&
+              <div onClick = {this.navigateCounter}>
+                <h4>Link to the Counter Page</h4>
+              </div> }
 
           </div>
         </div>
-      </nav>
     )
   }
 

@@ -1,4 +1,26 @@
-.content {
-  width: 300px;
-  margin: 0 auto;
+
+body {
+	padding: 25px;
+	background: rgb(30,30,30);
+	color: #FF4A1F;
+	text-align: center;
+	font-size: 30px;
+}
+
+a, a:visited {
+	color: #FF4A1F;
+}
+
+input {
+	font-size: 28px;
+	padding: 8px;
+	margin: 10px;
+}
+
+button {
+	font-size: 28px;
+	padding: 5px 15px;
+	border: none;
+	background: white;
+	margin: 25px;
 }

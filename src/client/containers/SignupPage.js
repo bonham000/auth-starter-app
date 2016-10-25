@@ -3,19 +3,17 @@ import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import * as authActions from '../actions/authActions'
+import { registerUser } from '../actions/login'
 
 @connect (
-	state => ({
-		
-	}),
+	null,
 	dispatch => ({
-		registerActions: bindActionCreators(authActions, dispatch)
+		registerUser: bindActionCreators(registerUser, dispatch)
 	}),
 )
 class SignupPage extends React.Component {
 	static propTypes = {
-		registerActions: React.PropTypes.object.isRequired
+		registerUser: React.PropTypes.func.isRequired
 	}
 	constructor(props) {
 		super(props);
@@ -28,11 +26,18 @@ class SignupPage extends React.Component {
 		this.submitUser = this.submitUser.bind(this);
 	}
 	submitUser() {
-		let newUser = {
-			username: this.state.username,
-			password: this.state.password
+		let { username, password, confirmPassword } = this.state;
+
+		if (password === confirmPassword) {
+
+			let newUser = {
+				username: username,
+				password: password
+			}
+			this.props.registerUser(newUser);
+
 		}
-		this.props.registerActions.registerUser(newUser);
+
 	}
 	handleInput(e) {
 		this.setState({

@@ -2,7 +2,7 @@ import React from 'react';
 import { Route } from 'react-router';
 import App from './containers/App';
 import Counter from './containers/Counter';
-import About from './components/About/About';
+import About from './components/About';
 import SignupPage from './containers/SignupPage'
 
 export default (

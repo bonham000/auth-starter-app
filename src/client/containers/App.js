@@ -2,21 +2,24 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { loginUser, fetchQuote, fetchSecretQuote } from '../actions/authActions'
 
 import Navbar from '../components/Navbar'
 
 class App extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool.isRequired,
+    errorMessage: PropTypes.string
+  }
   render() {
-
     const { dispatch, isAuthenticated, errorMessage } = this.props
-
     return (
       <div>
         <Navbar
-          isAuthenticated={isAuthenticated}
-          errorMessage={errorMessage}
-          dispatch={dispatch} />
+
+          isAuthenticated = {isAuthenticated}
+          errorMessage = {errorMessage}
+          dispatch = {dispatch} />
 
         {this.props.children}
 
@@ -25,21 +28,11 @@ class App extends Component {
   }
 }
 
-
-
-App.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
-  errorMessage: PropTypes.string
-}
-
-// These props come from the application's
-// state when it is started
+//These props come from the application's state when it is started
 function mapStateToProps(state) {
 
-  const { auth } = state
-  //const { authenticated } = quotes
-  const { isAuthenticated, errorMessage } = auth
+  const isAuthenticated = state.auth.isAuthenticated;
+  const errorMessage = state.auth.errorMessage;
 
   return {
     isAuthenticated,

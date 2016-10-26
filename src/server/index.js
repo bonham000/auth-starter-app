@@ -8,11 +8,11 @@ import { NODE_ENV, PORT } from './config/env'
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 
-//dotenv.config();
+dotenv.config();
+const url = process.env.MONGO_HOST;
 //const url = 'mongodb://mongo:mongo@ds057816.mlab.com:57816/fcc-voting-app'
 
 import mongodb from 'mongodb'
-import mongoose from 'mongoose'
 const MongoClient = mongodb.MongoClient;
 
 import authRoutes from './routes/auth-routes'
@@ -20,18 +20,13 @@ import apiRoutes from './routes/api-routes'
 
 const app = express();
 
-// MongoClient.connect(url, (err, db) => {
-// 	assert(null, err);
-// 	console.log('Conencted to MongoDB');
+MongoClient.connect(url, (err, db) => {
+	
+	assert.equal(null, err);
+	console.log('Connection to MongoDB Established');
 
-// 	db.close();
-// });
-
-// mongoose.connect(url);
-// mongoose.connection.on('connected', () => {
-// 	console.log('connected through Mongoose');
-// });
-
+	db.close();
+});
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

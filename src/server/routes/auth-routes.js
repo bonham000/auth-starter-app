@@ -2,6 +2,14 @@ import express from 'express'
 import _ from 'lodash'
 import jwt from 'jsonwebtoken'
 import config from '../config'
+import assert from 'assert'
+import dotenv from 'dotenv'
+
+dotenv.config();
+const url = process.env.MONGO_HOST;
+
+import mongodb from 'mongodb'
+const MongoClient = mongodb.MongoClient;
 
 const app = module.exports = express.Router();
 
@@ -42,10 +50,25 @@ function getUserScheme(req) {
   }
 }
 
+function addNewUser(userProfile) {
+
+  console.log('Submitting new user to the database:', userProfile);
+
+  // Add data to database
+  MongoClient.connect(url, (err, db) => {
+    assert.equal(null, err)
+
+    db.collection('users').insertOne(userProfile);
+
+    db.close();
+  });
+
+};
+
 // Sign up new user route
 app.post('/register', function(req, res) {
 
-  console.log('registering on server');
+  console.log('New registration received on server');
   
   var userScheme = getUserScheme(req);  
 
@@ -61,6 +84,7 @@ app.post('/register', function(req, res) {
   profile.id = _.max(users, 'id').id + 1;
 
   users.push(profile);
+  addNewUser(profile);
 
   res.status(201).send({
     username: userScheme.username,
@@ -97,3 +121,27 @@ app.post('/sessions/create', function(req, res) {
     user: user.username
   });
 });
+
+
+// // Add data to database
+// MongoClient.connect(url, (err, db) => {
+//   assert.equal(null, err)
+
+//   db.collection('polls').insertOne(req.body);
+
+//   res.end();
+
+//   db.close();
+// });
+
+
+// // Pull users from database
+// MongoClient.connect(url, (err, db) => {
+//   assert.equal(null, err);
+
+//   db.collection('users').find().toArray( (error, response) => {
+//     console.log(response)
+//   });
+
+//   db.close();
+// });

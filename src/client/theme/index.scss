@@ -43,3 +43,17 @@ button {
 	  }
 	}
 }
+
+.signupForm {
+	width: 600px;
+	margin: auto;
+	input {
+		width: 500px;
+		padding: 15px 5px;
+	}
+	button {
+		font-size: 32px;
+		padding: 10px 20px;
+		margin-bottom: 0;
+	}
+}

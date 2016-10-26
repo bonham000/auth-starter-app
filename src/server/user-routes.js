@@ -1,16 +1,22 @@
-var express = require('express'),
-    _       = require('lodash'),
-    config  = require('./config'),
-    jwt     = require('jsonwebtoken');
+// var express = require('express'),
+//     _       = require('lodash'),
+//     config  = require('./config'),
+//     jwt     = require('jsonwebtoken');
 
-var app = module.exports = express.Router();
+import express from 'express'
+import _ from 'lodash'
+import jwt from 'jsonwebtoken'
+import config from './config'
+
+const app = module.exports = express.Router();
 
 // XXX: This should be a database of users :).
-var users = [{
+let users = [{
   id: 1,
   username: 'gonto',
   password: 'gonto'
 }];
+
 
 function createToken(user) {
   return jwt.sign(_.omit(user, 'password'), config.secret, { expiresIn: 60 * 60 * 5 });
@@ -42,7 +48,7 @@ function getUserScheme(req) {
   }
 }
 
-// sign up new user route
+// Sign up new user route
 app.post('/register', function(req, res) {
 
   console.log('registering on server');
@@ -68,24 +74,30 @@ app.post('/register', function(req, res) {
   });
 });
 
+// Handle user login
 app.post('/sessions/create', function(req, res) {
 
   var userScheme = getUserScheme(req);
 
+  // Verify the user submitted a username and password
   if (!userScheme.username || !req.body.password) {
-    return res.status(400).send("You must send the username and the password");
+    return res.status(400).send({ error: "You must send the username and the password" });
   }
 
+  // Query users database for the submitted username
   var user = _.find(users, userScheme.userSearch);
   
-  if (!user) {
-    return res.status(401).send("The username or password don't match");
-  }
+  // If the username doesn't exist
+  if (!user) { return res.status(401).send({ error: "The user doesn't exist" }) }
 
+  // If the password doesn't make the stored username
   if (user.password !== req.body.password) {
-    return res.status(401).send("The username or password don't match");
+    return res.status(401).send({
+      error: "The username or password don't match"
+    })
   }
 
+  // Return valid authentication
   res.status(201).send({
     id_token: createToken(user),
     user: user.username

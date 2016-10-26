@@ -6,11 +6,31 @@ export default class Login extends React.Component {
     onLoginClick: PropTypes.func.isRequired,
     errorMessage: PropTypes.string
   }
-  handleClick(event) {
-    const username = this.refs.username
-    const password = this.refs.password
-    const creds = { username: username.value.trim(), password: password.value.trim() }
-    this.props.onLoginClick(creds)
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: '',
+      password: ''
+    }
+    this.handleInput = this.handleInput.bind(this);
+    this.submitLogin = this.submitLogin.bind(this);
+  }
+  handleInput(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+  submitLogin() {
+
+    const username = this.state.username;
+    const password = this.state.password;
+
+    if (username !== '' && password !== '') {
+      const creds = { username: username.trim(), password: password.trim() }
+      // dispatch login action 
+      this.props.onLoginClick(creds);
+    }
+
   }
   render() {
     const { errorMessage } = this.props
@@ -21,15 +41,19 @@ export default class Login extends React.Component {
           type = 'text'
           name = 'username'
           className = "loginInput"
-          placeholder = 'Username'/>
+          placeholder = 'Username'
+          value = {this.state.username}
+          onChange = {this.handleInput} />
 
         <input
           type = 'password'
           name = 'password'
           className = "loginInput"
-          placeholder = 'Password'/>
+          placeholder = 'Password'
+          value = {this.state.password}
+          onChange = {this.handleInput} />
 
-        <button onClick={(event) => this.handleClick(event)}>
+        <button onClick={this.submitLogin}>
           Login
         </button>
 

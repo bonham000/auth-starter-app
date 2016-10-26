@@ -20,20 +20,23 @@ class SignupPage extends React.Component {
 		this.state = {
 			username: '',
 			password: '',
-			confirmPassword: ''
+			confirmPassword: '',
+			email: ''
 		}
 		this.handleInput = this.handleInput.bind(this);
 		this.submitUser = this.submitUser.bind(this);
 	}
 	submitUser() {
-		let { username, password, confirmPassword } = this.state;
 
-		if (password === confirmPassword) {
+		let { username, password, confirmPassword, email } = this.state;
+
+		if (password === confirmPassword && email !== '' && username !== '') {
 
 			let newUser = {
 				username: username,
 				password: password
 			}
+			
 			this.props.registerUser(newUser);
 
 		}
@@ -46,7 +49,7 @@ class SignupPage extends React.Component {
 	}
 	render() {
 		return (
-			<div>
+			<div className = 'signupForm'>
 				<h1>Sign Up Here</h1>
 
 				<input
@@ -69,6 +72,13 @@ class SignupPage extends React.Component {
 					placeholder = "Password Confirmation"
 					value = {this.state.confirmPassword}
 					onChange = {this.handleInput} />
+
+				<input
+					type = "email" 
+					name = "email"
+					placeholder = "Email Address"
+					value = {this.state.email}
+					onChange = {this.handleInput} /><br />
 
 				<button onClick = {this.submitUser}>Sign Up</button>
 				<Link to = '/'>

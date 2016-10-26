@@ -1,22 +1,16 @@
-// var express = require('express'),
-//     _       = require('lodash'),
-//     config  = require('./config'),
-//     jwt     = require('jsonwebtoken');
-
 import express from 'express'
 import _ from 'lodash'
 import jwt from 'jsonwebtoken'
-import config from './config'
+import config from '../config'
 
 const app = module.exports = express.Router();
 
-// XXX: This should be a database of users :).
+// connect to MongoDB here
 let users = [{
   id: 1,
   username: 'gonto',
   password: 'gonto'
 }];
-
 
 function createToken(user) {
   return jwt.sign(_.omit(user, 'password'), config.secret, { expiresIn: 60 * 60 * 5 });
@@ -55,13 +49,13 @@ app.post('/register', function(req, res) {
   
   var userScheme = getUserScheme(req);  
 
-  // if (!userScheme.username || !req.body.password) {
-  //   return res.status(400).send("You must send the username and the password");
-  // }
+  if (!userScheme.username || !req.body.password) {
+    return res.status(400).send("You must send the username and the password");
+  }
 
-  // if (_.find(users, userScheme.userSearch)) {
-  //  return res.status(400).send("A user with that username already exists");
-  // }
+  if (_.find(users, userScheme.userSearch)) {
+   return res.status(400).send("A user with that username already exists");
+  }
 
   var profile = _.pick(req.body, userScheme.type, 'password', 'extra');
   profile.id = _.max(users, 'id').id + 1;

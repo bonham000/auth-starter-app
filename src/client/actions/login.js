@@ -52,12 +52,14 @@ export function loginUser(creds) {
 
           // Dispatch the success action
           dispatch(receiveLogin(user))
+
+          browserHistory.push('/');
         }
       }).catch(err => { 
         console.log('Authentication failed:', err);
         dispatch(loginError('You could not be authenticated'));
-      });
-    }
+    })
+  }
 }
 
 export const NEW_SIGNUP = 'NEW_SIGNUP'

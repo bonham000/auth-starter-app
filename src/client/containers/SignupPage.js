@@ -50,6 +50,7 @@ class SignupPage extends React.Component {
 	render() {
 		return (
 			<div className = 'signupForm'>
+
 				<h1>Sign Up Here</h1>
 
 				<input
@@ -81,9 +82,7 @@ class SignupPage extends React.Component {
 					onChange = {this.handleInput} /><br />
 
 				<button onClick = {this.submitUser}>Sign Up</button>
-				<Link to = '/'>
-					<h5>Return Home</h5>
-				</Link>
+				
 			</div>
 		);
 	}

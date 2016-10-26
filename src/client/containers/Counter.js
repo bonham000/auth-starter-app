@@ -42,13 +42,15 @@ class Counter extends React.Component {
 
     return (
       <div>
+
         <h1>Redux Counter</h1>
+
         <h3>{this.props.counting}</h3>
+        
         <button onClick={this.increment}>+</button>
+        
         <button onClick={countDec}>-</button>
-        <Link to = '/'>
-          <h4>Link Home</h4>
-        </Link>
+
       </div>
     );
   }

@@ -1,3 +1,5 @@
+import { browserHistory } from 'react-router'
+
 // Three possible states for our logout process as well.
 // Since we are using JWTs, we just need to remove the token
 // from localStorage. These actions are more useful if we
@@ -29,5 +31,6 @@ export function logoutUser() {
     localStorage.removeItem('id_token')
     localStorage.removeItem('user')
     dispatch(receiveLogout())
+    browserHistory.push('/')
   }
 }

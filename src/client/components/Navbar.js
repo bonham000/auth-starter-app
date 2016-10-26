@@ -1,10 +1,7 @@
 import React, { Component, PropTypes } from 'react'
-import Login from './Login'
-import Logout from './Logout'
+import { Link } from 'react-router'
 
-import { loginUser } from '../actions/login'
 import { logoutUser } from '../actions/logout'
-
 
 class Navbar extends Component {
   static propTypes = {
@@ -17,14 +14,31 @@ class Navbar extends Component {
     return (
         <div className = "navigationWrapper">
           <div className = "linksWrapper">
+
+            <Link to = '/'>
+              <h2>React Redux App</h2>
+            </Link>
+
             { !isAuthenticated &&
-              <Login
-                errorMessage={errorMessage}
-                onLoginClick={ creds => dispatch(loginUser(creds)) }
-              /> }      
+              <button>
+                <Link to = 'login'>Login</Link>
+              </button> }
+
+            { !isAuthenticated &&
+              <button>
+                <Link to = 'signup'>Sign Up</Link>
+              </button> }
 
             { isAuthenticated &&
-              <Logout onLogoutClick={() => dispatch(logoutUser())} /> }
+              <button>
+                <Link to = 'counter'>Counter</Link>
+              </button> }
+
+            { isAuthenticated &&
+              <button onClick={ () => dispatch(logoutUser()) }>
+                Logout
+              </button> }
+
           </div>
         </div>
     )

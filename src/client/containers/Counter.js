@@ -15,11 +15,6 @@ import * as countingActions from '../actions/counting';
   }),
 )
 class Counter extends React.Component {
-  // componentWillMount() {
-  //   if (!this.props.auth.isAuthenticated) {
-  //     browserHistory.push('/');
-  //   }
-  // }
   static propTypes = {
     counting: PropTypes.number.isRequired,
     actions: PropTypes.object.isRequired,

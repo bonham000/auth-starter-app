@@ -53,6 +53,7 @@ app.post('/register', function(req, res) {
 
           if (response === null) {
             
+            // hash password for storage
             const passwordDigest = bcrypt.hashSync(user.password, 10);
 
             const profile = {
@@ -99,16 +100,19 @@ app.post('/sessions/create', function(req, res) {
     
     Users.findOne( { username: username }).then( (data) => {
       
+      // user does not exist in database
       if (data === null) {
         console.log('User does not exist');
         res.status(401).send('User does not exist');
       }
+      // if user exists check if password is valid
       else if (bcrypt.compareSync(password, data.password)) {
         res.status(201).send({
           id_token: createToken(data.username),
           user: data.username
         });
       }
+      // user exists but password was invalid
       else {res.status(401).send('Invalid login attempt')}
 
     });

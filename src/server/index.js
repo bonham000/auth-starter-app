@@ -20,14 +20,6 @@ import apiRoutes from './routes/api-routes'
 
 const app = express();
 
-MongoClient.connect(url, (err, db) => {
-	
-	assert.equal(null, err);
-	console.log('Connection to MongoDB Established');
-
-	db.close();
-});
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -36,6 +28,15 @@ if (NODE_ENV === 'development') {
 } else {
   prodConfig(app);
 }
+
+// test connection to database
+MongoClient.connect(url, (err, db) => {
+	
+	assert.equal(null, err);
+	console.log('Connection to MongoDB Established');
+
+	db.close();
+});
 
 app.use(express.static('dist/client'));
 

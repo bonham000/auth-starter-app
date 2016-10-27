@@ -56,8 +56,8 @@ export function loginUser(creds) {
           browserHistory.push('/');
         }
       }).catch(err => { 
-        console.log('Authentication failed:', err);
-        dispatch(loginError('You could not be authenticated'));
+        console.log('Authentication failed:', err.response.data);
+        dispatch(loginError(err.response.data));
     })
   }
 }
@@ -73,12 +73,6 @@ export function newSignUp(user) {
 }
 
 export function registerUser(user) {
-
-  let config = {
-    method: 'POST',
-    headers: { 'Content-Type':'application/x-www-form-urlencoded' },
-    body: `username=${user.username}&password=${user.password}`
-  }
 
   return dispatch => {
 
@@ -103,7 +97,7 @@ export function registerUser(user) {
     }).then( () => {
       // User is redirected to the home page
       browserHistory.push('/');
-    }).catch( (err) => { console.log('Error:', err) });
+    }).catch( (err) => { console.log('Registration Error:', err.response.data) });
 
   }
 }

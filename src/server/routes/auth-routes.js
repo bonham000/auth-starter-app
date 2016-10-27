@@ -1,9 +1,12 @@
 import express from 'express'
 import _ from 'lodash'
 import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 import config from '../config'
 import assert from 'assert'
 import dotenv from 'dotenv'
+import Validator from 'validator'
+import validateUser from '../shared/validateUser'
 
 dotenv.config();
 const url = process.env.MONGO_HOST;
@@ -13,47 +16,12 @@ const MongoClient = mongodb.MongoClient;
 
 const app = module.exports = express.Router();
 
-// connect to MongoDB here
-let users = [{
-  id: 1,
-  username: 'gonto',
-  password: 'gonto'
-}];
-
 function createToken(user) {
   return jwt.sign(_.omit(user, 'password'), config.secret, { expiresIn: 60 * 60 * 5 });
 }
 
-function getUserScheme(req) {
-  
-  var username;
-  var type;
-  var userSearch = {};
-
-  // The POST contains a username and not an email
-  if(req.body.username) {
-    username = req.body.username;
-    type = 'username';
-    userSearch = { username: username };
-  }
-  // The POST contains an email and not an username
-  else if(req.body.email) {
-    username = req.body.email;
-    type = 'email';
-    userSearch = { email: username };
-  }
-
-  return {
-    username: username,
-    type: type,
-    userSearch: userSearch
-  }
-}
-
 function addNewUser(userProfile) {
-
   console.log('Submitting new user to the database:', userProfile);
-
   // Add data to database
   MongoClient.connect(url, (err, db) => {
     assert.equal(null, err)
@@ -65,61 +33,71 @@ function addNewUser(userProfile) {
 
 };
 
+
 // Sign up new user route
 app.post('/register', function(req, res) {
 
-  console.log('New registration received on server');
-  
-  var userScheme = getUserScheme(req);  
+  const user = req.body;
+  console.log('New registration received on server:', user);
 
-  if (!userScheme.username || !req.body.password) {
-    return res.status(400).send("You must send the username and the password");
+  const validation = validateUser(user)
+
+  if (!validation.isValid) {
+    console.log('Invalid Registration:', validation.errors);
+    res.status(400).send('Registration was in valid:', validation.errors);
+  }
+  else if (validation.isValid) {
+
+    const passwordDigest = bcrypt.hashSync(user.password, 10);
+
+    const profile = {
+      username: user.username,
+      email: user.email,
+      password: passwordDigest,
+      userData: {}
+    }
+
+    console.log('Valid Registration')
+
+    addNewUser(profile);
+
+    res.status(201).send({
+      username: user.username,
+      id_token: createToken(user)
+    });
+
   }
 
-  if (_.find(users, userScheme.userSearch)) {
-   return res.status(400).send("A user with that username already exists");
-  }
-
-  var profile = _.pick(req.body, userScheme.type, 'password', 'extra');
-  profile.id = _.max(users, 'id').id + 1;
-
-  users.push(profile);
-  addNewUser(profile);
-
-  res.status(201).send({
-    username: userScheme.username,
-    id_token: createToken(profile)
-  });
 });
 
 // Handle user login
 app.post('/sessions/create', function(req, res) {
 
-  var userScheme = getUserScheme(req);
+  const { username, password } = req.body;
 
-  // Verify the user submitted a username and password
-  if (!userScheme.username || !req.body.password) {
-    return res.status(400).send({ error: "You must send the username and the password" });
-  }
+  MongoClient.connect(url, (err, db) => {
+    assert.equal(null, err);
 
-  // Query users database for the submitted username
-  var user = _.find(users, userScheme.userSearch);
-  
-  // If the username doesn't exist
-  if (!user) { return res.status(401).send({ error: "The user doesn't exist" }) }
+    const Users = db.collection('users');
+    
+    Users.findOne( { username: username }).then( (data) => {
+      
+      if (data === null) {
+        console.log('User does not exist');
+        res.status(401).send('User does not exist');
+      }
+      else if (bcrypt.compareSync(password, data.password)) { 
+        res.status(201).send({
+          id_token: createToken(data),
+          user: data.username
+        });
+      }
+      else {res.status(401).send('Invalid login attempt')}
 
-  // If the password doesn't make the stored username
-  if (user.password !== req.body.password) {
-    return res.status(401).send({
-      error: "The username or password don't match"
-    })
-  }
+    });
 
-  // Return valid authentication
-  res.status(201).send({
-    id_token: createToken(user),
-    user: user.username
-  });
+  })
+
 });
 
 

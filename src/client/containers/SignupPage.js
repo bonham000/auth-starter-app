@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
+import validateUser from '../middleware/validateUser'
 import { registerUser } from '../actions/login'
 
 @connect (
@@ -21,24 +22,35 @@ class SignupPage extends React.Component {
 			username: '',
 			password: '',
 			confirmPassword: '',
-			email: ''
+			email: '',
+			errors: {}
 		}
 		this.handleInput = this.handleInput.bind(this);
 		this.submitUser = this.submitUser.bind(this);
 	}
 	submitUser() {
 
+		this.setState({ errors: {} });
+
 		let { username, password, confirmPassword, email } = this.state;
 
-		if (password === confirmPassword && email !== '' && username !== '') {
+		let newUser = {
+			username: username,
+			password: password,
+			confirmPassword: confirmPassword,
+			email: email
+		}
 
-			let newUser = {
-				username: username,
-				password: password
-			}
-			
-			this.props.registerUser(newUser);
+		const validation = validateUser(newUser);
 
+		// if user entries are valid fire off action
+		if (validation.isValid) { this.props.registerUser(newUser) }
+		// otherwise publish errors to client
+		else {
+			console.log(validation.errors);
+			this.setState({
+				errors: validation.error
+			})
 		}
 
 	}
@@ -48,10 +60,13 @@ class SignupPage extends React.Component {
 		});
 	}
 	render() {
+		const { errors } = this.state;
 		return (
 			<div className = 'signupForm'>
 
 				<h1>Sign Up Here</h1>
+
+				{errors.username && <div>{errors.username}</div>}
 
 				<input
 					type = "text" 
@@ -60,6 +75,8 @@ class SignupPage extends React.Component {
 					value = {this.state.username}
 					onChange = {this.handleInput} />
 
+				{errors.password && <div>{errors.password}</div>}
+
 				<input
 					type = "password" 
 					name = "password"
@@ -67,12 +84,16 @@ class SignupPage extends React.Component {
 					value = {this.state.password}
 					onChange = {this.handleInput} />
 
+				{errors.confirmPassword && <div>{errors.confirmPassword}</div>}
+
 				<input
 					type = "password" 
 					name = "confirmPassword"
 					placeholder = "Password Confirmation"
 					value = {this.state.confirmPassword}
 					onChange = {this.handleInput} />
+
+				{errors.email && <div>{errors.email}</div>}
 
 				<input
 					type = "email" 

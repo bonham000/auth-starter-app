@@ -34,7 +34,7 @@ function addNewUser(userProfile) {
 };
 
 
-// Sign up new user route
+// Register new user
 app.post('/register', function(req, res) {
 
   const user = req.body;
@@ -56,8 +56,6 @@ app.post('/register', function(req, res) {
       password: passwordDigest,
       userData: {}
     }
-
-    console.log('Valid Registration')
 
     addNewUser(profile);
 
@@ -99,27 +97,3 @@ app.post('/sessions/create', function(req, res) {
   })
 
 });
-
-
-// // Add data to database
-// MongoClient.connect(url, (err, db) => {
-//   assert.equal(null, err)
-
-//   db.collection('polls').insertOne(req.body);
-
-//   res.end();
-
-//   db.close();
-// });
-
-
-// // Pull users from database
-// MongoClient.connect(url, (err, db) => {
-//   assert.equal(null, err);
-
-//   db.collection('users').find().toArray( (error, response) => {
-//     console.log(response)
-//   });
-
-//   db.close();
-// });

@@ -7,13 +7,16 @@ import validateUser from '../middleware/validateUser'
 import { registerUser } from '../actions/login'
 
 @connect (
-	null,
+	state => ({
+		errors: state.auth.errorMessage
+	}),
 	dispatch => ({
 		registerUser: bindActionCreators(registerUser, dispatch)
 	}),
 )
 class SignupPage extends React.Component {
 	static propTypes = {
+		errors: React.PropTypes.string.isRequired,
 		registerUser: React.PropTypes.func.isRequired
 	}
 	constructor(props) {
@@ -65,6 +68,8 @@ class SignupPage extends React.Component {
 			<div className = 'signupForm'>
 
 				<h1>Sign Up Here</h1>
+
+				{this.props.errors && <div>{this.props.errors}</div>}
 
 				{errors.username && <div>{errors.username}</div>}
 

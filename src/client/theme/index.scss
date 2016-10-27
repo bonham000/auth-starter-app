@@ -38,10 +38,6 @@ button {
 	  flex-wrap: wrap;
 	  justify-content: center;
 	  align-items: center;
-	  h2 {
-	  	margin: 5px 15px;
-	  	color: $orange;
-	  }
 	  button {
 	  	color: black;
 	  	margin-left: 15px;
@@ -51,8 +47,11 @@ button {
 	  	text-decoration: none;
 	  	color: black;
 	  }
-	  .active {
-	  	color: blue !important;
+	  .navLink {
+	  	margin: 2px 8px;
+	  }
+	  .activeRoute {
+	  	color: $orange !important;
 	  }
 	}
 }

@@ -16,10 +16,11 @@ const MongoClient = mongodb.MongoClient;
 
 const app = module.exports = express.Router();
 
-function createToken(user) {
-  return jwt.sign(_.omit(user, 'password'), config.secret, { expiresIn: 60 * 60 * 5 });
+function createToken(username) {
+  return jwt.sign({user: username}, config.secret, { expiresIn: 60 * 60 });
 }
 
+// Insert a new user registration into the database
 function addNewUser(userProfile) {
   console.log('Submitting new user to the database:', userProfile);
   // Add data to database
@@ -33,7 +34,6 @@ function addNewUser(userProfile) {
 
 };
 
-
 // Register new user
 app.post('/register', function(req, res) {
 
@@ -42,28 +42,47 @@ app.post('/register', function(req, res) {
 
   const validation = validateUser(user)
 
-  if (!validation.isValid) {
+  // Check if the user submitted all the fields correctly
+  if (validation.isValid) {
+
+      MongoClient.connect(url, (err, db) => {
+        assert.equal(null, err);
+
+        // Check to see if any user already exists with this username
+        db.collection('users').findOne({ username: user.username }).then( (response) => {
+
+          if (response === null) {
+            
+            const passwordDigest = bcrypt.hashSync(user.password, 10);
+
+            const profile = {
+              username: user.username,
+              email: user.email,
+              password: passwordDigest,
+              userData: {}
+            }
+
+            addNewUser(profile);
+
+            res.status(201).send({
+              username: user.username,
+              id_token: createToken(username)
+            });
+
+          }
+          else { res.status(400).send('This username already exists') }
+
+        });
+
+        db.close();
+
+      })
+
+  }
+  // if user submission was invalid return errors to the client
+  else {
     console.log('Invalid Registration:', validation.errors);
     res.status(400).send('Registration was in valid:', validation.errors);
-  }
-  else if (validation.isValid) {
-
-    const passwordDigest = bcrypt.hashSync(user.password, 10);
-
-    const profile = {
-      username: user.username,
-      email: user.email,
-      password: passwordDigest,
-      userData: {}
-    }
-
-    addNewUser(profile);
-
-    res.status(201).send({
-      username: user.username,
-      id_token: createToken(user)
-    });
-
   }
 
 });
@@ -84,9 +103,9 @@ app.post('/sessions/create', function(req, res) {
         console.log('User does not exist');
         res.status(401).send('User does not exist');
       }
-      else if (bcrypt.compareSync(password, data.password)) { 
+      else if (bcrypt.compareSync(password, data.password)) {
         res.status(201).send({
-          id_token: createToken(data),
+          id_token: createToken(data.username),
           user: data.username
         });
       }

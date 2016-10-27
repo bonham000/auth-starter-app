@@ -63,12 +63,22 @@ export function loginUser(creds) {
 }
 
 export const NEW_SIGNUP = 'NEW_SIGNUP'
+export const REGISTRATION_ERROR = 'REGISTRATION_ERROR'
 
 export function newSignUp(user) {
   return {
     type: NEW_SIGNUP,
     isFetching: true,
     isAuthenticated: false
+  }
+}
+
+export function registrationError(error) {
+  return {
+    type: REGISTRATION_ERROR,
+    isFetching: false,
+    isAuthenticated: false,
+    error
   }
 }
 
@@ -97,7 +107,10 @@ export function registerUser(user) {
     }).then( () => {
       // User is redirected to the home page
       browserHistory.push('/');
-    }).catch( (err) => { console.log('Registration Error:', err.response.data) });
+    }).catch( (err) => {
+      console.log('Registration Error:', err.response.data);
+      dispatch(registrationError(err.response.data));
+    });
 
   }
 }

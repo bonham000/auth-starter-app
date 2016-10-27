@@ -15,24 +15,20 @@ class Navbar extends Component {
         <div className = "navigationWrapper">
           <div className = "linksWrapper">
 
-            <Link to = '/'>
-              <h2>React Redux App</h2>
-            </Link>
+            <Link to = '/' className = 'navLink' activeClassName = 'activeRoute'>Home</Link>
+
+            { !isAuthenticated &&
+                <button>
+                  <Link to = 'login' activeClassName = 'activeRoute'>Login</Link>
+                </button> }
 
             { !isAuthenticated &&
               <button>
-                <Link to = 'login'>Login</Link>
-              </button> }
-
-            { !isAuthenticated &&
-              <button>
-                <Link to = 'signup'>Sign Up</Link>
+                <Link to = 'signup' activeClassName = 'activeRoute'>Sign Up</Link>
               </button> }
 
             { isAuthenticated &&
-              <button>
-                <Link to = 'counter'>Counter</Link>
-              </button> }
+                <Link to = 'counter' className = 'navLink' activeClassName = 'activeRoute'>Counter</Link> }
 
             { isAuthenticated &&
               <button onClick={ () => dispatch(logoutUser()) }>

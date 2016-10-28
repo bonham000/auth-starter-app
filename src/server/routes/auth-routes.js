@@ -2,7 +2,7 @@ import express from 'express'
 import _ from 'lodash'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-import config from '../config'
+import secret from '../jwt-config'
 import assert from 'assert'
 import dotenv from 'dotenv'
 import Validator from 'validator'
@@ -17,7 +17,7 @@ const MongoClient = mongodb.MongoClient;
 const app = module.exports = express.Router();
 
 function createToken(username) {
-  return jwt.sign({user: username}, config.secret, { expiresIn: 60 * 60 });
+  return jwt.sign({user: username}, secret, { expiresIn: 60 * 60 });
 }
 
 // Insert a new user registration into the database
@@ -67,7 +67,7 @@ app.post('/register', function(req, res) {
 
             res.status(201).send({
               username: user.username,
-              id_token: createToken(username)
+              id_token: createToken(user.username)
             });
 
           }

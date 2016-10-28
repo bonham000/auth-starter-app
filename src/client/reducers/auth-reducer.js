@@ -8,6 +8,8 @@ import { LOGOUT_SUCCESS } from '../actions/logout'
 // we would also want a util to check if the token is expired.
 
 const defaultState = {
+  loginError: '',
+  registrationError: '',
   isFetching: false,
   isAuthenticated: localStorage.getItem('id_token') ? true : false
 }
@@ -27,14 +29,15 @@ const auth = (state = defaultState, action) => {
       return Object.assign({}, state, {
         isFetching: false,
         isAuthenticated: true,
-        errorMessage: ''
+        loginError: '',
+        registrationError: ''
       });
   
     case LOGIN_FAILURE:
       return Object.assign({}, state, {
         isFetching: false,
         isAuthenticated: false,
-        errorMessage: action.message
+        loginError: action.error
       });
    
     case LOGOUT_SUCCESS:
@@ -54,7 +57,7 @@ const auth = (state = defaultState, action) => {
       return Object.assign({}, state, {
         isFetching: false,
         isAuthenticated: false,
-        errorMessage: action.error
+        registrationError: action.error
       });
  
     default:

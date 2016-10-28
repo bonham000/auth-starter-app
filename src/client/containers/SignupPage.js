@@ -8,7 +8,7 @@ import { registerUser } from '../actions/login'
 
 @connect (
 	state => ({
-		errors: state.auth.errorMessage
+		errorMessage: state.auth.registrationError
 	}),
 	dispatch => ({
 		registerUser: bindActionCreators(registerUser, dispatch)
@@ -16,7 +16,7 @@ import { registerUser } from '../actions/login'
 )
 class SignupPage extends React.Component {
 	static propTypes = {
-		errors: React.PropTypes.string.isRequired,
+		errorMessage: React.PropTypes.string.isRequired,
 		registerUser: React.PropTypes.func.isRequired
 	}
 	constructor(props) {
@@ -53,7 +53,7 @@ class SignupPage extends React.Component {
 			console.log(validation.errors);
 			this.setState({
 				errors: validation.error
-			})
+			});
 		}
 
 	}
@@ -69,9 +69,9 @@ class SignupPage extends React.Component {
 
 				<h1>Sign Up Here</h1>
 
-				{this.props.errors && <div>{this.props.errors}</div>}
+				{this.props.errorMessage && <div className = "errorsBox">{this.props.errorMessage}</div>}
 
-				{errors.username && <div>{errors.username}</div>}
+				{errors.username && <div className = "errorsBox">{errors.username}</div>}
 
 				<input
 					type = "text" 
@@ -80,7 +80,7 @@ class SignupPage extends React.Component {
 					value = {this.state.username}
 					onChange = {this.handleInput} />
 
-				{errors.password && <div>{errors.password}</div>}
+				{errors.password && <div className = "errorsBox">{errors.password}</div>}
 
 				<input
 					type = "password" 
@@ -89,7 +89,7 @@ class SignupPage extends React.Component {
 					value = {this.state.password}
 					onChange = {this.handleInput} />
 
-				{errors.confirmPassword && <div>{errors.confirmPassword}</div>}
+				{errors.confirmPassword && <div className = "errorsBox">{errors.confirmPassword}</div>}
 
 				<input
 					type = "password" 
@@ -98,7 +98,7 @@ class SignupPage extends React.Component {
 					value = {this.state.confirmPassword}
 					onChange = {this.handleInput} />
 
-				{errors.email && <div>{errors.email}</div>}
+				{errors.email && <div className = "errorsBox">{errors.email}</div>}
 
 				<input
 					type = "email" 

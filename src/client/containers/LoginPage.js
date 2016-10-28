@@ -7,7 +7,7 @@ import * as loginActions from '../actions/login'
 
 @connect(
   state => ({
-    errorMessage: state.auth.errorMessage
+    errorMessage: state.auth.loginError
   }),
   dispatch => ({
     loginActions: bindActionCreators(loginActions, dispatch)
@@ -47,9 +47,12 @@ class LoginPage extends React.Component {
   render() {
     const { errorMessage } = this.props
     return (
-      <div>
+      <div className = 'loginForm'>
 
         <h1>Log In Here</h1>
+
+        { errorMessage && <div className = 'errorsBox'>
+          <p>{errorMessage}</p></div> }
 
         <input
           type = 'text'
@@ -67,11 +70,9 @@ class LoginPage extends React.Component {
           value = {this.state.password}
           onChange = {this.handleInput} />
 
-        <button onClick={this.submitLogin}>
+        <button onClick = {this.submitLogin}>
           Login
         </button>
-
-        { errorMessage && <p>{errorMessage}</p> }
 
       </div>
     );

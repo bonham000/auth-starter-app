@@ -24,12 +24,12 @@ function receiveLogin(user) {
   }
 }
 
-function loginError(message) {
+function loginError(error) {
   return {
     type: LOGIN_FAILURE,
     isFetching: false,
     isAuthenticated: false,
-    message
+    error
   }
 }
 

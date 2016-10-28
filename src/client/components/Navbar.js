@@ -19,12 +19,12 @@ class Navbar extends Component {
 
             { !isAuthenticated &&
                 <button>
-                  <Link to = 'login' activeClassName = 'activeRoute'>Login</Link>
+                  <Link to = 'login' className = 'authLink'>Login</Link>
                 </button> }
 
             { !isAuthenticated &&
               <button>
-                <Link to = 'signup' activeClassName = 'activeRoute'>Sign Up</Link>
+                <Link to = 'signup' className = 'authLink'>Sign Up</Link>
               </button> }
 
             { isAuthenticated &&
